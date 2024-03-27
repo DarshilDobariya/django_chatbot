@@ -14,9 +14,6 @@ from django.views.decorators.cache import never_cache
 
 api_key="Your_api_key"
 
-# api_key = "ac7acd797dmsh36212c7dd290473p11f966jsne29f600626a6"
-# Create your views here.
-
 # Function to interact with the AI chatbot API
 def askAI(message):
     # Endpoint URL for the AI chatbot API
