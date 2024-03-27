@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<style>
+  body, html {
+    height: 100%;
+  }
+
+  .messages-box {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .messages-list {
+    padding-left: 0;
+  }
+
+  .message {
+    margin-bottom: 15px;
+    list-style: none;
+  }
+
+  .message-text {
+    padding: 10px;
+    border-radius: 20px; /* Rounded corners */
+  }
+
+  .sent .message-text {
+    background-color: #007bff; /* Blue background color for sent messages */
+    color: #fff; /* White text color for sent messages */
+    border-top-right-radius: 5px;  /* Rounded top-right corner */
+  }
+
+  .received .message-text {
+    background-color: #e0e0e0; /* Default background color for received messages */
+    color: #000; /* Default text color for received messages */
+    border-top-left-radius: 5px;/* Rounded top-left corner */
+  }
+
+  .message-form {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background-color: #ffffff;
+  }
+
+  .message-input {
+    flex: 1;
+    border-radius: 20px; /* Rounded corners */
+    border: 2px solid black;
+    padding: 10px; /* Adjust padding */
+    transition: border-color 0.3s ease; /* Smooth transition for border color change */
+  }
+
+  .message-input:focus {
+    outline: none; /* Remove default focus outline */
+    border-color: blue; /* Change border color on focus */
+  }
+
+  .message-input::placeholder {
+    padding-left: 10px; /* Padding for the placeholder text */
+  }
+
+  .btn-send {
+    border-radius: 20px; /* Rounded corners */
+    margin-left: 5px; /* Add margin */
+  }
+
+  .chat-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+<div class="chat-container">
+  <div class="card flex-grow-1">
+    {% if user.is_authenticated %}
+    <div class="card-header bg-primary text-white"style="display: flex; align-items: center;">{{user.username}}'s Assistant
+      <a style="color: white; margin-left: auto;" href="logout">Logout</a>
+    </div>
+    {% else %}
+    <div class="card-header bg-primary text-white">
+      <a style="color: white" href="login">Login</a>   
+      <a style="color: white;" href="register">Register</a></div>
+    {% endif %}
+    <div class="card-body messages-box">
+      
+      <ul class="list-unstyled messages-list">
+        {% for chat in chats %}
+          {% if chat.user == request.user %}
+            <li class="message sent">
+              <div class="message-text">
+                <div class="message-sender">
+                  <b>You</b>
+                </div>
+                <div class="message-content">
+                  {{chat.message}}
+                </div>
+              </div>
+            </li>
+            <li class="message received">
+              <div class="message-text">
+                <div class="message-sender">
+                  <b>AI Chatbot</b>
+                </div>
+                <div class="message-content">
+                  {{chat.response}}
+                </div>
+              </div>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+      
+    </div>
+    <br><br>
+    <br><br>
+    <br><br>
+  </div>
+  <form class="message-form">
+    {%csrf_token%}
+    <div class="input-group">
+      <input type="text" class="form-control message-input" placeholder=" Type your message...">
+      <div class="input-group-append">
+        
+        <button type="button" class="btn btn-primary btn-mic" style="background-color: white; color: black;"><i class="fas fa-microphone"></i></button>
+        <button type="submit" class="btn btn-primary btn-send">Send</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+  const messagesList = document.querySelector('.messages-list');
+  const messageForm = document.querySelector('.message-form');
+  const messageInput = document.querySelector('.message-input');
+  const micButton = document.querySelector('.btn-mic');
+
+  let isRecording = false;
+  let recognition;
+
+  micButton.addEventListener('click', () => {
+    if (!isRecording) {
+      // Start recording
+      isRecording = true;
+      micButton.classList.add('recording');
+      micButton.disabled = true;
+
+      recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        const speechToText = event.results[0][0].transcript;
+        messageInput.value = speechToText;
+      }
+
+      recognition.onerror = function(event) {
+        console.error('Speech recognition error:', event.error);
+        stopRecording();
+      }
+
+      recognition.onend = function() {
+        stopRecording();
+      }
+    } else {
+      // Stop recording
+      stopRecording();
+    }
+
+  });
+
+  function stopRecording() {
+    isRecording = false;
+    micButton.classList.remove('recording');
+    micButton.disabled = false;
+
+    if (recognition) {
+      recognition.stop();
+    }
+
+    // Automatically submit the form after stopping recording
+    messageForm.dispatchEvent(new Event('submit'));
+  }
+
+  messageForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const message = messageInput.value.trim();
+    if (message.length === 0) {
+      return;
+    }
+
+    const messageItem = document.createElement('li');
+    messageItem.classList.add('message', 'sent');
+    messageItem.innerHTML = `
+        <div class="message-text">
+            <div class="message-sender">
+                <b>You</b>
+            </div>
+            <div class="message-content">
+                ${message}
+            </div>
+        </div>`;
+    messagesList.appendChild(messageItem);
+    messageInput.value = '';
+
+    fetch('', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        'csrfmiddlewaretoken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        'message': message
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        const response = data.response;
+        const messageItem = document.createElement('li');
+        messageItem.classList.add('message', 'received');
+        messageItem.innerHTML = `
+        <div class="message-text">
+            <div class="message-sender">
+              <b>AI Chatbot</b>
+            </div>
+            <div class="message-content">
+                ${response}
+            </div>
+        </div>
+          `;
+        messagesList.appendChild(messageItem);
+      });
+  });
+</script>
+
+
+{% endblock %}

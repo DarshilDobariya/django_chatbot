@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block styles %}
+<style>
+        body {
+            background-color: #ffffff;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .register-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            max-width: 500px; /* Widened form */
+            border-radius: 15px; /* Rounded corners */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            border-top-left-radius: 15px; /* Rounded corners */
+            border-top-right-radius: 15px; /* Rounded corners */
+            padding: 20px 0;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type=text], input[type=password] {
+            border-radius: 8px; /* Rounded corners */
+            border: 1px solid #ccc;
+            padding: 12px; /* Increased padding */
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 15px; /* Increased margin */
+        }
+
+        button[type=submit] {
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 24px; /* Increased padding */
+            border: none;
+            border-radius: 8px; /* Rounded corners */
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button[type=submit]:hover {
+            background-color: #0062cc;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 12px; /* Increased padding */
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px; /* Rounded corners */
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="register-container">
+  <div class="card">
+    <div class="card-header">Register</div>
+    <div class="card-body">
+      {% if error_message %}
+        <div class="alert alert-danger" role="alert">{{ error_message }}</div>
+      {% endif %}
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="password1">Password</label>
+          <input type="password" class="form-control" id="password1" name="password1" required>
+        </div>
+        <div class="form-group">
+          <label for="password2">Confirm Password</label>
+          <input type="password" class="form-control" id="password2" name="password2" required>
+        </div>
+        <button type="submit">Register</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
