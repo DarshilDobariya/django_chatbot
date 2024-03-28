@@ -6,6 +6,4 @@ urlpatterns = [
     path('chatbot', views.chatbot, name='chatbot'),  
     path('register', views.register, name='register'),
     path('logout', views.logout_view, name='logout'),
-    path('login/', views.login, name='login'),  # Define the login URL pattern
-
 ]
