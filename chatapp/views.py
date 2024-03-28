@@ -5,16 +5,16 @@ from django.shortcuts import render,redirect
 from django.contrib import auth
 import requests
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
 from .models import Chat
 from django.urls import reverse
 import speech_recognition as sr
 from django.views.decorators.cache import never_cache
+from django.contrib.auth.decorators import login_required, user_passes_test
+
 
 
 api_key="Your_api_key"
 
-# api_key = "ac7acd797dmsh36212c7dd290473p11f966jsne29f600626a6"
 # Create your views here.
 
 # Function to interact with the AI chatbot API
@@ -67,7 +67,11 @@ def recognize_speech():
 
 
 # View function for the chatbot interface
+@login_required
 def chatbot(request):
+
+    if not request.user.is_authenticated:
+        return redirect('login')
     # Load previous chat messages of the current user
     chats = Chat.objects.filter(user=request.user)
 
@@ -88,10 +92,10 @@ def chatbot(request):
 
 
 # View function for user login
-# View function for user login
 def login(request):
     if request.user.is_authenticated:
-        return redirect('chatbot')  # Redirect authenticated users to chatbot page
+        return redirect('chatbot')
+    
     
     if request.method == 'POST':
         # Handle POST request for user login
@@ -114,7 +118,7 @@ def login(request):
 
     
 # View function for user logout
-@never_cache
+@login_required
 def logout_view(request):
     auth.logout(request)  # Logout the current user
     return redirect('login')  # Redirect to the login page
