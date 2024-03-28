@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 api_key="Your_api_key"
 
+
 # Create your views here.
 
 # Function to interact with the AI chatbot API

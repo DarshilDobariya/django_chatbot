@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Dont navigate back
     'chatapp.middleware.NoCacheMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
 ]
 
 
@@ -121,6 +122,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 LOGIN_URL = 'login'
+# CSRF_COOKIE_SECURE = True
 
 
 # Default primary key field type
