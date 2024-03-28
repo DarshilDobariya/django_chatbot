@@ -1,3 +1,4 @@
+import re
 from sqlite3 import IntegrityError
 from django.utils import timezone
 from django.http import JsonResponse
@@ -132,6 +133,13 @@ def register(request):
         email = request.POST['email']
         password1 = request.POST['password1']
         password2 = request.POST['password2']
+
+
+        # Check if the password meets the criteria
+        if len(password1) < 6 or not re.match(r'^(?=.*[a-zA-Z])(?=.*\d)', password1):
+            error_message = 'Password must be at least 6 characters long and contain at least one alphabet and one number.'
+            return render(request, 'register.html', {'error_message': error_message})
+
 
         if password1 == password2:
             # Check if the username already exists
