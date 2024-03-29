@@ -15,8 +15,12 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 
 api_key="Your_api_key"
-
-
+# api_key = "6df210db6dmsh06dde28f4fb01cap19f9e4jsn4a1f5ea575fd"
+# api_key = "3262f23e36msh5d3b8a5edc07ebbp1a43edjsn932d05f65a4b"
+# api_key = "11b2de71d5msh2eedf66b621dd0ep198304jsn27ff87d9c44f"
+# api_key = "ac7acd797dmsh36212c7dd290473p11f966jsne29f600626a6"
+# api_key = "7329a4f2demsh4fda215d890ee4cp11a933jsn15e6759da05b"
+# api_key = "011e4ed9a3msh5c204050ca3263cp1f23cdjsne754e2e58a26"
 # Create your views here.
 
 # Function to interact with the AI chatbot API
