@@ -22,19 +22,19 @@
 
   .message-text {
     padding: 10px;
-    border-radius: 20px; /* Rounded corners */
+    border-radius: 20px; 
   }
 
   .sent .message-text {
-    background-color: #007bff; /* Blue background color for sent messages */
-    color: #fff; /* White text color for sent messages */
-    border-top-right-radius: 5px;  /* Rounded top-right corner */
+    background-color: #007bff; 
+    color: #fff; 
+    border-top-right-radius: 5px; 
   }
 
   .received .message-text {
-    background-color: #e0e0e0; /* Default background color for received messages */
-    color: #000; /* Default text color for received messages */
-    border-top-left-radius: 5px;/* Rounded top-left corner */
+    background-color: #e0e0e0; 
+    color: #000; 
+    border-top-left-radius: 5px;
   }
 
   .message-form {
@@ -49,24 +49,24 @@
 
   .message-input {
     flex: 1;
-    border-radius: 20px; /* Rounded corners */
+    border-radius: 20px;
     border: 2px solid black;
-    padding: 10px; /* Adjust padding */
-    transition: border-color 0.3s ease; /* Smooth transition for border color change */
+    padding: 10px; 
+    transition: border-color 0.3s ease; 
   }
 
   .message-input:focus {
-    outline: none; /* Remove default focus outline */
-    border-color: blue; /* Change border color on focus */
+    outline: none; 
+    border-color: blue; 
   }
 
   .message-input::placeholder {
-    padding-left: 10px; /* Padding for the placeholder text */
+    padding-left: 10px; 
   }
 
   .btn-send {
-    border-radius: 20px; /* Rounded corners */
-    margin-left: 5px; /* Add margin */
+    border-radius: 20px; 
+    margin-left: 5px; 
   }
 
   .chat-container {
@@ -83,7 +83,10 @@
 <div class="chat-container">
   <div class="card flex-grow-1">
     {% if user.is_authenticated %}
-    <div class="card-header bg-primary text-white"style="display: flex; align-items: center;">{{user.username}}'s Assistant
+    <div class="card-header bg-primary text-white"style="display: flex; align-items: center;">
+      {{user.username}}'s Assistant
+      <!-- <a style="color: white; margin-left: auto;" href="chat-history"></a> -->
+      
       <a style="color: white; margin-left: auto;" href="logout">Logout</a>
     </div>
     {% else %}

@@ -4,7 +4,6 @@
 
 {% block styles %}
 <style>
-  /* CSS styles for the login page */
   body {
       background-color: #ffffff;
       margin: 0;
@@ -20,7 +19,7 @@
 
   .card {
       max-width: 400px;
-      border-radius: 15px; /* Rounded corners */
+      border-radius: 15px; 
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
 
@@ -30,8 +29,8 @@
       font-size: 24px;
       font-weight: bold;
       text-align: center;
-      border-top-left-radius: 15px; /* Rounded corners */
-      border-top-right-radius: 15px; /* Rounded corners */
+      border-top-left-radius: 15px; 
+      border-top-right-radius: 15px;
       padding: 20px 0;
   }
 
@@ -50,7 +49,7 @@
   }
 
   input[type=text], input[type=password] {
-      border-radius: 5px; /* Rounded corners */
+      border-radius: 5px; 
       border: 1px solid #ccc;
       padding: 10px;
       font-size: 16px;
@@ -64,9 +63,9 @@
       color: white;
       font-size: 16px;
       font-weight: bold;
-      padding: 8px 16px; /* Reduced button size */
+      padding: 8px 16px; 
       border: none;
-      border-radius: 5px; /* Rounded corners */
+      border-radius: 5px; 
       cursor: pointer;
       width: 100%;
       margin-bottom: 10px;
@@ -82,10 +81,10 @@
       padding: 10px;
       margin-bottom: 20px;
       border: 1px solid #f5c6cb;
-      border-radius: 5px; /* Rounded corners */
+      border-radius: 5px; 
   }
 
-  /* Style for register link */
+  
   .register-link {
       display: block;
       text-align: center;
@@ -93,7 +92,7 @@
       font-size: 14px;
       text-decoration: none;
       color: #007bff;
-      border-radius: 5px; /* Rounded corners */
+      border-radius: 5px; 
       padding: 8px 16px;
       background-color: #ffffff;
   }
@@ -124,6 +123,7 @@
         </div>
         <button type="submit">Login</button>
         <a href="/register" class="register-link">Register</a>
+        <a href="/admin" class="register-link">Admin Login</a>
       </form>
     </div>
   </div>

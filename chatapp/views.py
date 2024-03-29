@@ -91,7 +91,10 @@ def chatbot(request):
     # Render the chatbot interface with previous chat messages
     return render(request, 'chatbot.html', {'chats': chats})
 
-
+@login_required
+def chat_history(request):
+    chats = Chat.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'chat_history.html', {'chats': chats})
 
 # View function for user login
 def login(request):
@@ -117,8 +120,7 @@ def login(request):
         # Render the login page for GET requests
         next_page = request.GET.get('next', reverse('chatbot'))
         return render(request, 'login.html')
-
-    
+ 
 # View function for user logout
 @login_required
 def logout_view(request):
